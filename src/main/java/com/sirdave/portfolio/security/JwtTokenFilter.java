@@ -24,14 +24,19 @@ import static java.util.Optional.ofNullable;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
+    private final UserRepository repository;
+    private final JwtTokenUtil jwtTokenUtil;
+
     @Autowired
-    private UserRepository repository;
-    private JwtTokenUtil jwtTokenUtil;
+    public JwtTokenFilter(UserRepository repository, JwtTokenUtil jwtTokenUtil){
+        this.repository = repository;
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
-                                    @NonNull HttpServletResponse httpServletResponse,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+                                    HttpServletResponse httpServletResponse,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
         // Get authorization header and validate
         String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);

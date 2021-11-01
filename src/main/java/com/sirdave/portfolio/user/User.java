@@ -25,6 +25,15 @@ public class User implements UserDetails {
     private String password;
     private LocalDate dateJoined;
 
+    public User(String firstName, String lastName, String email, String phoneNumber, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.dateJoined = LocalDate.now();
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
