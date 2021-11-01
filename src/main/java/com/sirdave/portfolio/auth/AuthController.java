@@ -65,7 +65,6 @@ public class AuthController {
                             signInRequest.getEmail(), signInRequest.getPassword())
             );
             User user = (User) authentication.getPrincipal();
-            System.out.println(user.getEmail() + " " + user.getFirstName());
             String token = jwtTokenUtil.generateAccessToken(user);
             UserResponse<?> response = new UserResponse<>(true, "User successfully authenticated", token);
             return ResponseEntity.ok()

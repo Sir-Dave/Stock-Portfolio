@@ -25,9 +25,14 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtTokenFilter jwtTokenFilter;
-    private UserRepository repository;
+    private final JwtTokenFilter jwtTokenFilter;
+    private final UserRepository repository;
+
+    public SecurityConfig(JwtTokenFilter jwtTokenFilter, UserRepository repository){
+        super();
+        this.jwtTokenFilter = jwtTokenFilter;
+        this.repository = repository;
+    }
 
     @Override @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {

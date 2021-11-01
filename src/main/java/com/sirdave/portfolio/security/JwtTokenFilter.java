@@ -27,7 +27,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final UserRepository repository;
     private final JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
     public JwtTokenFilter(UserRepository repository, JwtTokenUtil jwtTokenUtil){
         this.repository = repository;
         this.jwtTokenUtil = jwtTokenUtil;
@@ -35,8 +34,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse,
-                                    FilterChain filterChain) throws ServletException, IOException {
+                                    @NonNull HttpServletResponse httpServletResponse,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         // Get authorization header and validate
         String header = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
