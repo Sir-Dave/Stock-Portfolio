@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,6 +35,26 @@ public class UserController {
         return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
 
+    @PutMapping
+    ResponseEntity<UserResponse<?>> updateUserProfile(
+            @RequestParam (required = false) String firstName,
+            @RequestParam(required = false) String lastName,
+            @RequestParam (required = false) String phoneNumber,
+            HttpServletRequest request) {
+
+        User user = getCurrentLoggedUser(request, jwtTokenUtil, userService);
+        if (user != null) {
+            userService.updateUserProfile(user.getId(), firstName, lastName, phoneNumber);
+            UserResponse<?> response = new UserResponse<>(true,
+                    "Successfully updated details", null);
+            return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.OK);
+        }
+        else{
+            UserResponse<?> response = new UserResponse<>(false, "You have to log in first", null);
+            return new ResponseEntity<>(response, new HttpHeaders(), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
     User getCurrentLoggedUser(HttpServletRequest request,
                               JwtTokenUtil jwtTokenUtil,
                               UserService userService){
@@ -45,7 +63,6 @@ public class UserController {
         String token = header.split(" ")[1].trim();
 
         String id = jwtTokenUtil.getUserId(token);
-        System.out.println("User Controller: User id is " + id);
         return userService.getUserById(Long.parseLong(id));
     }
 }
