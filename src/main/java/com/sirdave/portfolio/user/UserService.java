@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
         );
     }
 
-    public User getOneUser(Long id){
+    public User getUserById(Long id){
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException(String.format(USER_ID_NOT_FOUND, id)));
 
